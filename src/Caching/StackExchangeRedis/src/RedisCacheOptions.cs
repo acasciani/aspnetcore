@@ -40,6 +40,11 @@ namespace Microsoft.Extensions.Caching.StackExchangeRedis
         /// </summary>
         public Func<ProfilingSession> ProfilingSession { get; set; }
 
+        /// <summary>
+        /// Indicates if the ReadReplica should be preferred for get requests.
+        /// </summary>
+        public bool PreferReadReplica { get; set; }
+
         RedisCacheOptions IOptions<RedisCacheOptions>.Value
         {
             get { return this; }

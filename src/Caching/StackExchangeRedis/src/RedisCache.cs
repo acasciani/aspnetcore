@@ -206,7 +206,7 @@ namespace Microsoft.Extensions.Caching.StackExchangeRedis
             {
                 if (_cache == null)
                 {
-                    if(_options.ConnectionMultiplexerFactory == null)
+                    if (_options.ConnectionMultiplexerFactory == null)
                     {
                         if (_options.ConfigurationOptions is not null)
                         {
@@ -247,7 +247,7 @@ namespace Microsoft.Extensions.Caching.StackExchangeRedis
             {
                 if (_cache == null)
                 {
-                    if(_options.ConnectionMultiplexerFactory is null)
+                    if (_options.ConnectionMultiplexerFactory is null)
                     {
                         if (_options.ConfigurationOptions is not null)
                         {
@@ -355,7 +355,14 @@ namespace Microsoft.Extensions.Caching.StackExchangeRedis
             RedisValue[] results;
             if (getData)
             {
-                results = await _cache.HashMemberGetAsync(_instance + key, AbsoluteExpirationKey, SlidingExpirationKey, DataKey).ConfigureAwait(false);
+                if (_options.PreferReadReplica)
+                {
+                    results = await _cache.HashMemberGetAsync(_instance + key, CommandFlags.PreferReplica, AbsoluteExpirationKey, SlidingExpirationKey, DataKey).ConfigureAwait(false);
+                }
+                else
+                {
+                    results = await _cache.HashMemberGetAsync(_instance + key, AbsoluteExpirationKey, SlidingExpirationKey, DataKey).ConfigureAwait(false);
+                }
             }
             else
             {

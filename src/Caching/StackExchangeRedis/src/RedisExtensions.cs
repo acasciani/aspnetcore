@@ -17,6 +17,16 @@ namespace Microsoft.Extensions.Caching.StackExchangeRedis
         internal static async Task<RedisValue[]> HashMemberGetAsync(
             this IDatabase cache,
             string key,
+            CommandFlags commandFlags,
+            params string[] members)
+        {
+            // TODO: Error checking?
+            return await cache.HashGetAsync(key, GetRedisMembers(members), flags: commandFlags).ConfigureAwait(false);
+        }
+
+        internal static async Task<RedisValue[]> HashMemberGetAsync(
+            this IDatabase cache,
+            string key,
             params string[] members)
         {
             // TODO: Error checking?
